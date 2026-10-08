@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskify Students PRO | Kozimov AI Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-base: #0f172a;
+            --bg-dark: #0d111d;
+            --glass: rgba(30, 41, 59, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --primary-grad: linear-gradient(135deg, #6366f1, #a855f7);
+            --neon-cyan: #00f2ff;
+            --neon-gold: #fbbf24;
+            --neon-blue: #3b82f6;
+            --neon-pink: #ec4899;
+            --neon-lime: #84cc16;
+            --neon-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            background: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 20%);
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 100px; }
+
+        header {
+            background: var(--primary-grad);
+            padding: 50px 20px;
+            border-radius: 0 0 40px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .user-profile h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+        }
+        .user-profile span {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 400;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .coin-counter {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0,0,0,0.4);
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin-top: 20px;
+            font-weight: 700;
+            color: var(--neon-gold);
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+            animation: glow-gold 2s infinite alternate;
+        }
+        @keyframes glow-gold {
+            from { box-shadow: 0 0 5px var(--neon-gold); }
+            to { box-shadow: 0 0 20px var(--neon-gold); }
+        }
+
+        .ai-mentor-card {
+            margin: -70px auto 40px;
+            max-width: 700px;
+            padding: 25px 35px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+            position: relative;
+        }
+        .mentor-info h3 {
+            color: var(--neon-cyan);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        .mentor-info p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .mentor-btn {
+            background: var(--primary-grad);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+        .mentor-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
+        }
+
+        .lang-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .lang-pill {
+            padding: 10px 24px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .lang-pill:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .lang-pill.active {
+            color: white;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            background: rgba(0, 242, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .subject-card {
+            padding: 35px 25px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--accent-color);
+        }
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        }
+        .subject-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .status-tag {
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 100px;
+            background: rgba(0,0,0,0.3);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-panel {
+            max-width: 850px;
+            margin: 0 auto 80px;
+            padding: 40px;
+        }
+
+        /* Admin Dashboard Styles */
+        #admin-app {
+            display: none;
+            padding-top: 100px;
+        }
+        .admin-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 100px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .admin-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .admin-table th, .admin-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .admin-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-edit { background: var(--neon-blue); color: white; }
+        .btn-delete { background: var(--neon-pink); color: white; }
+        .btn-add {
+            background: var(--primary-grad);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .admin-nav-btn {
+            background: var(--glass);
+            color: white;
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .admin-nav-btn:hover { background: rgba(255,255,255,0.1); }
+        .admin-nav-btn.active { border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+
+        .leaderboard-title {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.03);
+        }
+        .rank-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(10px);
+        }
+        .rank-num { width: 45px; font-weight: 800; font-size: 1.3rem; color: var(--text-muted); }
+        .rank-badge {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #000;
+        }
+        .badge-1 { background: linear-gradient(135deg, #fef3c7, #fbbf24); box-shadow: 0 0 15px #fbbf24; }
+        .badge-2 { background: linear-gradient(135deg, #f1f5f9, #94a3b8); box-shadow: 0 0 15px #94a3b8; }
+        .badge-3 { background: linear-gradient(135deg, #ffedd5, #ea580c); box-shadow: 0 0 15px #ea580c; }
+        .rank-name { flex: 1; font-weight: 600; font-size: 1.1rem; }
+        .rank-coins {
+            font-weight: 800;
+            color: var(--neon-gold);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Modals - Enhanced Blur */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            width: 95%;
+            max-width: 650px;
+            padding: 40px;
+            position: relative;
+            animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-modal {
+            position: absolute;
+            top: 20px; right: 20px;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .close-modal:hover { color: white; transform: rotate(90deg); }
+
+        /* Auth Screens - Cinematic */
+        #auth-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0d111d 100%);
+        }
+        .auth-form {
+            width: 100%;
+            max-width: 420px;
+            padding: 50px 40px;
+        }
+        .auth-form h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; margin-bottom: 10px; color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        .input-group input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 4px;
+        }
+        .nav-item i { font-size: 1.2rem; }
+        .nav-item.active { color: var(--neon-cyan); transform: translateY(-5px); }
+        .nav-item:hover { color: white; }
+
+        /* Profile & Shop Modal Styles */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .shop-item {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .shop-item:hover { border-color: var(--neon-gold); background: rgba(251,191,36,0.1); }
+        .shop-item .price { color: var(--neon-gold); font-weight: 800; display: block; margin-top: 10px; }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+        .logout-btn:hover { background: #ef4444; color: white; }
+
+        /* Toasts - Sliding Animation */
+        .toast-container {
+            position: fixed;
+            bottom: 80px; right: 30px;
+            z-index: 3000;
+        }
+        .toast {
+            background: var(--glass);
+            color: white;
+            padding: 16px 28px;
+            border-radius: 16px;
+            margin-top: 12px;
+            border-left: 6px solid var(--neon-cyan);
+            animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* AI Chat UI - Modern Messaging */
+        .chat-box {
+            height: 350px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+        }
+        .msg {
+            padding: 12px 18px;
+            border-radius: 18px;
+            max-width: 85%;
+            font-size: 1rem;
+            line-height: 1.5;
+            animation: msgIn 0.3s ease;
+        }
+        @keyframes msgIn { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .msg.user {
+            align-self: flex-end;
+            background: var(--primary-grad);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .msg.ai {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--glass-border);
+        }
+    
+        /* Admin extras */
+        .admin-table-wrap { overflow-x: auto; }
+        #admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-box { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 18px; padding: 18px; color: var(--text-muted); font-size: 0.85rem; }
+        .stat-box span { display: block; font-size: 1.8rem; font-weight: 800; color: var(--neon-cyan); margin-bottom: 4px; }
+        .color-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: middle; margin-right: 6px; }
+        .empty-row { text-align: center; color: var(--text-muted); padding: 30px !important; }
+        .admin-inline-input, .admin-search { background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--glass-border); border-radius: 10px; padding: 8px 12px; outline: none; width: 110px; }
+        .admin-search { width: 100%; max-width: 300px; }
+        .admin-inline-input option { background: #0f172a; }
+        .admin-inline-input:focus, .admin-search:focus { border-color: var(--neon-cyan); }
+        .modal-content.modal-wide { max-width: 720px; width: 95%; max-height: 90vh; overflow-y: auto; }
+        .quiz-row { background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .quiz-row-head { display: flex; gap: 10px; margin-bottom: 10px; }
+        .quiz-row input[type=text], .quiz-row input[type=number] { flex: 1; width: 100%; background: rgba(0,0,0,0.3); color: white; border: 1px solid var(--glass-border); border-radius: 10px; padding: 10px 12px; outline: none; }
+        .quiz-row input:focus { border-color: var(--neon-cyan); }
+        .opt-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .opt-row input[type=radio] { accent-color: var(--neon-green); width: 18px; height: 18px; flex: none; }
+        .reward-label { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem; margin-top: 6px; }
+        .reward-label input { max-width: 90px; flex: none !important; }
+        @media (max-width: 640px) { .admin-header { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen">
+        <div class="glass-panel auth-form">
+            <h2 data-i18n="auth_title">🎓 Taskify PRO Login</h2>
+            <div id="login-form">
+                <div class="input-group">
+                    <label data-i18n="label_username">Username</label>
+                    <input type="text" id="login-user" placeholder="@username">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="label_password">Password</label>
+                    <input type="password" id="login-pass" placeholder="••••••••">
+                </div>
+                <button class="mentor-btn" style="width:100%" onclick="app.handleLogin()" data-i18n="btn_login">Enter Dashboard</button>
+                <p style="text-align:center; margin-top:25px; font-size:0.95rem; color:var(--text-muted);">
+                    <span data-i18n="no_account">Don't have an account?</span> <a href="#" onclick="app.toggleAuth()" style="color:var(--neon-cyan); font-weight:600; text-decoration:none;" data-i18n="link_register">Register</a>
+                </p>
+            </div>
+            <div id="register-form" style="display:none">
+                <div class="input-group">
+                    <label data-i18n="label_fullname">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="Kozimov Alisher">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="label_username">Username</label>
+                    <input type="text" id="reg-user" placeholder="@username">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="label_password">Password</label>
+                    <input type="password" id="reg-pass" placeholder="••••••••">
+                </div>
+                <button class="mentor-btn" style="width:100%" onclick="app.handleRegister()" data-i18n="btn_register">Create Account</button>
+                <p style="text-align:center; margin-top:25px; font-size:0.95rem; color:var(--text-muted);">
+                    <span data-i18n="have_account">Already have an account?</span> <a href="#" onclick="app.toggleAuth()" style="color:var(--neon-cyan); font-weight:600; text-decoration:none;" data-i18n="link_login">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app" style="display:none">
+        <header>
+            <div class="user-profile">
+                <h1 id="disp-name">Loading...</h1>
+                <span><i class="fas fa-at"></i> <span id="disp-user">username</span></span>
+                <br>
+                <div class="coin-counter">
+                    <i class="fas fa-coins" style="margin-right:10px"></i>
+                    <span id="disp-coins">0</span> <span data-i18n="coin_unit">Coins</span>
+                </div>
+                <button id="admin-access-btn" class="mentor-btn" style="display:none; margin-top:20px; font-size:0.8rem; padding:8px 16px" onclick="app.openAdmin()">🛡️ Admin Panel</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="glass-panel ai-mentor-card">
+                <div class="mentor-info" style="text-align:left">
+                    <h3 style="color:var(--neon-cyan)" data-i18n="mentor_title">Kozimov AI Mentor</h3>
+                    <p data-i18n="mentor_quote">"The expert way to learn is to apply."</p>
+                </div>
+                <button class="mentor-btn" onclick="app.openAI()"><span data-i18n="btn_ask_mentor">Ask Mentor</span> <i class="fas fa-robot" style="margin-left:8px"></i></button>
+            </div>
+
+            <div class="lang-nav" id="lang-nav">
+                <div class="lang-pill active" data-lang="uz">O'zbek</div>
+                <div class="lang-pill" data-lang="en">English</div>
+                <div class="lang-pill" data-lang="ru">Русский</div>
+                <div class="lang-pill" data-lang="kq">Qoraqalpoq</div>
+                <div class="lang-pill" data-lang="ko">한국어</div>
+            </div>
+
+            <div class="subjects-grid" id="subjects-grid">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="leaderboard-panel glass-panel">
+                <h2 class="leaderboard-title" data-i18n="lb_title">Top Talabalar 🏆</h2>
+                <div id="leaderboard-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="app.navigate('home')">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="app.navigate('subjects')">
+                <i class="fas fa-book"></i>
+                <span>Fanlar</span>
+            </div>
+            <div class="nav-item" onclick="app.navigate('leaderboard')">
+                <i class="fas fa-trophy"></i>
+                <span>Top</span>
+            </div>
+            <div class="nav-item" onclick="app.openProfile()">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-app" style="display:none">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>🛡️ Admin Dashboard</h1>
+                <button class="admin-nav-btn" onclick="app.showMainApp()">Back to Student View</button>
+            </div>
+
+            <div id="admin-stats"></div>
+
+            <div class="admin-nav" style="display:flex; gap:10px; margin-bottom:30px">
+                <button class="admin-nav-btn active" onclick="app.switchAdminTab('subjects')">Manage Subjects</button>
+                <button class="admin-nav-btn" onclick="app.switchAdminTab('users')">Manage Users</button>
+            </div>
+
+            <div id="admin-subjects-tab">
+                <div class="admin-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+                        <h2>Subjects</h2>
+                        <button class="btn-add" onclick="app.openSubjectModal()">+ Add Subject</button>
+                    </div>
+                    <div class="admin-table-wrap"><table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Color</th>
+                                <th>Quizzes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-subjects-list"></tbody>
+                    </table></div>
+                </div>
+            </div>
+
+            <div id="admin-users-tab" style="display:none">
+                <div class="admin-card">
+                    <h2>User Moderation</h2>
+                    <input type="text" id="admin-user-search" class="admin-search" placeholder="Search by name or @username" oninput="app.renderAdminUsers()" style="margin-top:15px">
+                    <div class="admin-table-wrap"><table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Coins</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-list"></tbody>
+                    </table></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content glass-panel">
+            <span class="close-modal" onclick="app.closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        const API_BASE = '/api';
+
+        const translations = {
+            uz: {
+                auth_title: '🎓 Taskify PRO Kirish',
+                label_username: 'Foydalanuvchi nomi',
+                label_password: 'Parol',
+                label_fullname: 'To\'liq ism',
+                btn_login: 'Kirish',
+                btn_register: 'Ro\'yxatdan o\'tish',
+                no_account: 'Akkauntingiz yo\'qmi?',
+                link_register: 'Ro\'yxatdan o\'ting',
+                have_account: 'Akkauntingiz bormi?',
+                link_login: 'Kirish',
+                coin_unit: 'Tanga',
+                mentor_title: 'Kozimov AI Mentor',
+                mentor_quote: '"O\'rganishning eng yaxshi yo\'li - qo\'llashdir."',
+                btn_ask_mentor: 'Mentorga so\'rash',
+                lb_title: 'Top Talabalar 🏆',
+                sub_interactive: 'Interaktiv modul',
+                quiz_title: 'Tezkor Quiz',
+                ai_welcome: 'Salom! Men sizning AI Mentoringizman. Bugun sizga qanday yordam bera olaman?',
+                prof_title: 'Mening Profilim',
+                prof_stats: 'Mening Statistikam',
+                shop_title: 'Do\'koni',
+                logout: 'Chiqish'
+            },
+            en: {
+                auth_title: '🎓 Taskify PRO Login',
+                label_username: 'Username',
+                label_password: 'Password',
+                label_fullname: 'Full Name',
+                btn_login: 'Enter Dashboard',
+                btn_register: 'Create Account',
+                no_account: "Don't have an account?",
+                link_register: 'Register',
+                have_account: 'Already have an account?',
+                link_login: 'Login',
+                coin_unit: 'Coins',
+                mentor_title: 'Kozimov AI Mentor',
+                mentor_quote: '"The expert way to learn is to apply."',
+                btn_ask_mentor: 'Ask Mentor',
+                lb_title: 'Top Students 🏆',
+                sub_interactive: 'Interactive Module',
+                quiz_title: 'Quick Quiz',
+                ai_welcome: 'Hello! I am your AI Mentor. How can I help you today?',
+                prof_title: 'My Profile',
+                prof_stats: 'My Statistics',
+                shop_title: 'Shop',
+                logout: 'Logout'
+            },
+            ru: {
+                auth_title: '🎓 Вход в Taskify PRO',
+                label_username: 'Имя пользователя',
+                label_password: 'Пароль',
+                label_fullname: 'Полное имя',
+                btn_login: 'Войти в панель',
+                btn_register: 'Создать аккаунт',
+                no_account: 'Нет аккаунта?',
+                link_register: 'Зарегистрироваться',
+                have_account: 'Уже есть аккаунт?',
+                link_login: 'Войти',
+                coin_unit: 'Монеты',
+                mentor_title: 'Kozimov AI Mentor',
+                mentor_quote: '"Лучший способ обучения — применение."',
+                btn_ask_mentor: 'Спросить ментора',
+                lb_title: 'Лучшие Студенты 🏆',
+                sub_interactive: 'Интерактивный модуль',
+                quiz_title: 'Быстрый Квиз',
+                ai_welcome: 'Привет! Я ваш AI Ментор. Чем я могу помочь вам сегодня?',
+                prof_title: 'Мой Профиль',
+                prof_stats: 'Моя Статистика',
+                shop_title: 'Магазин',
+                logout: 'Выйти'
+            },
+            kq: {
+                auth_title: '🎓 Taskify PRO Kiris',
+                label_username: 'Poydalanıwshı atı',
+                label_password: 'Parol',
+                label_fullname: 'Toliq esimi',
+                btn_login: 'Panelge kiris',
+                btn_register: 'Akkaunt jaratıw',
+                no_account: 'Akkauntıńız joq pa?',
+                link_register: 'Rokatlanıw',
+                have_account: 'Akkauntıńız bar ma?',
+                link_login: 'Kiris',
+                coin_unit: 'Tanga',
+                mentor_title: 'Kozimov AI Mentor',
+                mentor_quote: '"Úyreniwniń eń jaqsı jolı - qollanıw."',
+                btn_ask_mentor: 'Mentordan soraw',
+                lb_title: 'Eń Jaqsı Studentler 🏆',
+                sub_interactive: 'Interaktiv modul',
+                quiz_title: 'Tez Quiz',
+                ai_welcome: 'Sálem! Men sizniń AI Mentorıńızman. Bugun sizge qalay járdem bere alaman?',
+                prof_title: 'Meniń Profilim',
+                prof_stats: 'Meniń Statistikam',
+                shop_title: 'Tanga Dúkeni',
+                logout: 'Shıǵıw'
+            },
+            ko: {
+                auth_title: '🎓 Taskify PRO 로그인',
+                label_username: '사용자 이름',
+                label_password: '비밀번호',
+                label_fullname: '전체 이름',
+                btn_login: '대시보드 입장',
+                btn_register: '계정 생성',
+                no_account: '계정이 없으신가요?',
+                link_register: '가입하기',
+                have_account: '이미 계정이 있으신가요?',
+                link_login: '로그인',
+                coin_unit: '코인',
+                mentor_title: 'Kozimov AI 멘토',
+                mentor_quote: '"배우는 가장 좋은 방법은 적용하는 것입니다."',
+                btn_ask_mentor: '멘토에게 질문하기',
+                lb_title: '최우수 학생 🏆',
+                sub_interactive: '인터랙티브 모듈',
+                quiz_title: '빠른 퀴즈',
+                ai_welcome: '안녕하세요! 당신의 AI 멘토입니다. 오늘 어떻게 도와드릴까요?',
+                prof_title: '내 프로필',
+                prof_stats: '내 통계',
+                shop_title: '코인 상점',
+                logout: '로그아웃'
+            }
+        };
+
+        const app = {
+            user: null,
+            token: null,
+            currentLang: 'uz',
+
+            async init() {
+                const savedToken = localStorage.getItem('taskify_token');
+                const savedLang = localStorage.getItem('taskify_lang') || 'uz';
+                this.currentLang = savedLang;
+
+                this.setupLangNav();
+                this.changeLanguage(savedLang);
+
+                if (savedToken) {
+                    this.token = savedToken;
+                    this.tryAutoLogin();
+                }
+            },
+
+            setupLangNav() {
+                document.querySelectorAll('.lang-pill').forEach(pill => {
+                    pill.onclick = () => {
+                        const lang = pill.dataset.lang;
+                        this.changeLanguage(lang);
+                        localStorage.setItem('taskify_lang', lang);
+                    };
+                });
+            },
+
+            changeLanguage(lang) {
+                this.currentLang = lang;
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.dataset.i18n;
+                    el.innerText = translations[lang][key] || el.innerText;
+                });
+
+                document.querySelectorAll('.lang-pill').forEach(p => {
+                    p.classList.toggle('active', p.dataset.lang === lang);
+                });
+            },
+
+            async tryAutoLogin() {
+                try {
+                    const res = await this.apiRequest('/user/profile');
+                    this.user = res;
+                    this.showMainApp();
+                    this.updateUI();
+                    this.loadSubjects();
+                    this.loadLeaderboard();
+                } catch {
+                    localStorage.removeItem('taskify_token');
+                }
+            },
+
+            async handleLogin() {
+                const username = document.getElementById('login-user').value;
+                const password = document.getElementById('login-pass').value;
+                try {
+                    const data = await this.apiPost('/auth/login', { username, password });
+                    this.token = data.token;
+                    this.user = data.user;
+                    localStorage.setItem('taskify_token', data.token);
+                    this.showMainApp();
+                    this.updateUI();
+                    this.loadSubjects();
+                    this.loadLeaderboard();
+                    this.showToast('Welcome back, ' + data.user.fullName + '!');
+                } catch (err) {
+                    this.showToast(err.message || 'Login failed');
+                }
+            },
+
+            async handleRegister() {
+                const fullName = document.getElementById('reg-name').value;
+                const username = document.getElementById('reg-user').value;
+                const password = document.getElementById('reg-pass').value;
+                try {
+                    const data = await this.apiPost('/auth/register', { fullName, username, password });
+                    this.token = data.token;
+                    this.user = data.user;
+                    localStorage.setItem('taskify_token', data.token);
+                    this.showMainApp();
+                    this.updateUI();
+                    this.loadSubjects();
+                    this.loadLeaderboard();
+                    this.showToast('Account created successfully!');
+                } catch (err) {
+                    this.showToast(err.message || 'Registration failed');
+                }
+            },
+
+            toggleAuth() {
+                const l = document.getElementById('login-form');
+                const r = document.getElementById('register-form');
+                l.style.display = l.style.display === 'none' ? 'block' : 'none';
+                r.style.display = r.style.display === 'none' ? 'block' : 'none';
+            },
+
+            showMainApp() {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('admin-app').style.display = 'none';
+            },
+
+            updateUI() {
+                if (!this.user) return;
+                document.getElementById('disp-name').innerText = this.user.fullName || 'Student';
+                document.getElementById('disp-user').innerText = this.user.username;
+                document.getElementById('disp-coins').innerText = this.user.coins;
+
+                // Show Admin button if user is admin
+                const adminBtn = document.getElementById('admin-access-btn');
+                if (adminBtn) {
+                    adminBtn.style.display = (this.user.isAdmin || this.user.role === 'admin') ? 'inline-block' : 'none';
+                }
+            },
+
+            async loadSubjects() {
+                try {
+                    const subjects = await this.apiRequest('/subjects');
+                    const grid = document.getElementById('subjects-grid');
+                    grid.innerHTML = '';
+
+                    subjects.forEach(s => {
+                        const card = document.createElement('div');
+                        card.className = 'glass-panel subject-card';
+                        card.style.setProperty('--accent-color', s.accentColor || 'var(--neon-cyan)');
+                        card.style.borderColor = s.accentColor || 'var(--neon-cyan)';
+                        card.innerHTML = `
+                            <span class="subject-icon" style="color:${s.accentColor}">${this.getSubjectIcon(s.name)}</span>
+                            <h3>${s.name}</h3>
+                            <span class="status-tag">${translations[this.currentLang].sub_interactive}</span>
+                        `;
+                        card.onclick = () => this.openSubject(s);
+                        grid.appendChild(card);
+                    });
+                } catch (err) {
+                    this.showToast('Error loading subjects');
+                }
+            },
+
+            getSubjectIcon(name) {
+                const icons = {
+                    'IT': '💻', 'Cyber Security': '🛡️', 'Mathematics': '📐',
+                    'Physics': '⚛️', 'Chemistry': '🧪', 'Biology': '🌿', 'English': '📚'
+                };
+                return icons[name] || '🎓';
+            },
+
+            async openSubject(subject) {
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `
+                    <h2 style="color:${subject.accentColor}">${subject.name} Learning</h2>
+                    <div style="margin: 20px 0">
+                        <iframe width="100%" height="315" src="${subject.youtubePlaylistUrl}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div id="quiz-section">
+                        <h3 data-i18n="quiz_title">${translations[this.currentLang].quiz_title}</h3>
+                        <div id="quiz-container"></div>
+                    </div>
+                `;
+                this.openModal();
+                this.loadQuiz(subject);
+            },
+
+            async loadQuiz(subject) {
+                const container = document.getElementById('quiz-container');
+                if (!subject.quizzes || subject.quizzes.length === 0) {
+                    container.innerHTML = '<p>No quizzes available.</p>';
+                    return;
+                }
+
+                const q = subject.quizzes[0];
+                container.innerHTML = `
+                    <p style="margin: 15px 0; font-size:1.1rem">${q.question}</p>
+                    <div style="display:grid; gap:10px">
+                        ${q.options.map((opt, i) => `
+                            <button class="lang-pill" style="text-align:left; color:white" onclick="app.submitAnswer('${subject._id}', 0, ${i})">${opt}</button>
+                        `).join('')}
+                    </div>
+                `;
+            },
+
+            async submitAnswer(subjectId, qIdx, aIdx) {
+                try {
+                    const res = await this.apiPost('/quiz/verify', { subjectId, questionIndex: qIdx, answerIndex: aIdx });
+                    if (res.correct) {
+                        this.user.coins = res.coins;
+                        this.updateUI();
+                        this.showToast(res.message);
+                    } else {
+                        this.showToast(res.message);
+                    }
+                } catch (err) {
+                    this.showToast('Quiz error');
+                }
+            },
+
+            async loadLeaderboard() {
+                try {
+                    const top = await this.apiRequest('/leaderboard');
+                    const list = document.getElementById('leaderboard-list');
+                    list.innerHTML = '';
+
+                    top.forEach((u, i) => {
+                        const item = document.createElement('div');
+                        item.className = 'rank-item';
+                        const badgeClass = i === 0 ? 'badge-1' : i === 1 ? 'badge-2' : i === 2 ? 'badge-3' : '';
+                        const displayName = u.fullName || u.username || 'Anonymous';
+                        item.innerHTML = `
+                            <div class="rank-num">${i + 1}</div>
+                            <div class="rank-badge ${badgeClass}">${i < 3 ? (i+1) : ''}</div>
+                            <div class="rank-name">${displayName}</div>
+                            <div class="rank-coins">${u.coins} <i class="fas fa-coins"></i></div>
+                        `;
+                        list.appendChild(item);
+                    });
+                } catch (err) {
+                    console.error('Leaderboard fail');
+                }
+            },
+
+            async openAI() {
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `
+                    <h3 data-i18n="mentor_title">${translations[this.currentLang].mentor_title}</h3>
+                    <div class="chat-box" id="chat-box">
+                        <div class="msg ai">${translations[this.currentLang].ai_welcome}</div>
+                    </div>
+                    <div style="display:flex; gap:10px">
+                        <input type="text" id="ai-input" class="lang-pill" style="flex:1; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--glass-border)" placeholder="...">
+                        <button class="mentor-btn" onclick="app.askAI()">Send</button>
+                    </div>
+                `;
+                this.openModal();
+            },
+
+            async askAI() {
+                const input = document.getElementById('ai-input');
+                const box = document.getElementById('chat-box');
+                const prompt = input.value.trim();
+                if (!prompt) return;
+
+                box.innerHTML += `<div class="msg user">${prompt}</div>`;
+                input.value = '';
+                box.scrollTop = box.scrollHeight;
+
+                try {
+                    const res = await this.apiPost('/ai/ask', { prompt });
+                    box.innerHTML += `<div class="msg ai">${res.response}</div>`;
+                    box.scrollTop = box.scrollHeight;
+                } catch (err) {
+                    box.innerHTML += `<div class="msg ai">${this.esc(err.message || 'Error...')}</div>`;
+                    box.scrollTop = box.scrollHeight;
+                }
+            },
+
+            openProfile() {
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:30px" data-i18n="prof_title">${translations[this.currentLang].prof_title}</h2>
+                    <div class="stat-row">
+                        <span data-i18n="label_username">Username</span>
+                        <span style="color:var(--neon-cyan)">@${this.user.username}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span data-i18n="label_fullname">Full Name</span>
+                        <span>${this.user.fullName}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span data-i18n="coin_unit">Coins</span>
+                        <span style="color:var(--neon-gold); font-weight:800">${this.user.coins}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Change Password</span>
+                        <button class="mentor-btn" style="padding: 5px 15px; font-size:0.8rem" onclick="app.openChangePassword()">Update</button>
+                    </div>
+                    <button class="mentor-btn" style="width:100%; margin-top:20px" onclick="app.openShop()">
+                        <i class="fas fa-shopping-cart"></i> <span data-i18n="shop_title">${translations[this.currentLang].shop_title}</span>
+                    </button>
+                    <button class="logout-btn" onclick="app.handleLogout()" data-i18n="logout">${translations[this.currentLang].logout}</button>
+                `;
+                this.openModal();
+            },
+
+            openShop() {
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px" data-i18n="shop_title">${translations[this.currentLang].shop_title}</h2>
+                    <p style="text-align:center; color:var(--text-muted); margin-bottom:20px">Spend your coins on exclusive rewards!</p>
+                    <div class="shop-grid">
+                        <div class="shop-item" onclick="app.buyItem('Neon Badge', 100)">
+                            <i class="fas fa-medal" style="font-size:2rem; color:var(--neon-cyan)"></i>
+                            <div style="margin-top:10px">Neon Badge</div>
+                            <span class="price">100 🪙</span>
+                        </div>
+                        <div class="shop-item" onclick="app.buyItem('Gold Avatar', 500)">
+                            <i class="fas fa-user-astronaut" style="font-size:2rem; color:var(--neon-gold)"></i>
+                            <div style="margin-top:10px">Gold Avatar</div>
+                            <span class="price">500 🪙</span>
+                        </div>
+                        <div class="shop-item" onclick="app.buyItem('Cyber-Shield', 250)">
+                            <i class="fas fa-shield-halved" style="font-size:2rem; color:var(--neon-pink)"></i>
+                            <div style="margin-top:10px">Cyber-Shield</div>
+                            <span class="price">250 🪙</span>
+                        </div>
+                        <div class="shop-item" onclick="app.buyItem('Mentor VIP', 1000)">
+                            <i class="fas fa-crown" style="font-size:2rem; color:var(--neon-gold)"></i>
+                            <div style="margin-top:10px">Mentor VIP</div>
+                            <span class="price">1000 🪙</span>
+                        </div>
+                    </div>
+                    <button class="mentor-btn" style="width:100%; margin-top:30px" onclick="app.openProfile()">Back to Profile</button>
+                `;
+                this.openModal();
+            },
+
+            async buyItem(name, cost) {
+                try {
+                    const res = await this.apiPost('/shop/buy', { itemId: name, price: cost });
+                    this.user.coins = res.totalCoins;
+                    this.updateUI();
+                    this.showToast(res.message);
+                } catch (err) {
+                    this.showToast(err.message || 'Purchase failed');
+                }
+            },
+
+            handleLogout() {
+                localStorage.removeItem('taskify_token');
+                location.reload();
+            },
+
+            openChangePassword() {
+                const body = document.getElementById('modal-body');
+                body.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px">Change Password</h2>
+                    <div class="input-group">
+                        <label>Current Password</label>
+                        <input type="password" id="old-pass" placeholder="••••••••">
+                    </div>
+                    <div class="input-group">
+                        <label>New Password</label>
+                        <input type="password" id="new-pass" placeholder="••••••••">
+                    </div>
+                    <button class="mentor-btn" style="width:100%" onclick="app.handleChangePassword()">Update Password</button>
+                `;
+                this.openModal();
+            },
+
+            async handleChangePassword() {
+                const oldPassword = document.getElementById('old-pass').value;
+                const newPassword = document.getElementById('new-pass').value;
+                try {
+                    const res = await this.apiPost('/auth/change-password', { oldPassword, newPassword });
+                    this.showToast(res.message);
+                    this.closeModal();
+                } catch (err) {
+                    this.showToast(err.message || 'Failed to change password');
+                }
+            },
+
+            navigate(section) {
+                const sections = {
+                    'home': 0,
+                    'subjects': 0,
+                    'leaderboard': document.querySelector('.leaderboard-panel').offsetTop
+                };
+
+                if (section === 'home') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (section === 'subjects') {
+                    document.getElementById('subjects-grid').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: sections[section], behavior: 'smooth' });
+                }
+
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+            },
+
+            openModal() { document.getElementById('modal-overlay').style.display = 'flex'; },
+
+            /* ================= ADMIN PANEL ================= */
+            adminSubjects: [],
+            adminUsers: [],
+            _qSeq: 0,
+
+            esc(v) {
+                return String(v ?? '').replace(/[&<>"']/g, c => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                }[c]));
+            },
+
+            async apiSend(method, path, body) {
+                const res = await fetch(`${API_BASE}${path}`, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                    },
+                    body: body ? JSON.stringify(body) : undefined
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.message || 'Request failed');
+                return data;
+            },
+
+            openAdmin() {
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('admin-app').style.display = 'block';
+                window.scrollTo({ top: 0 });
+                this.switchAdminTab('subjects');
+                this.loadAdminSubjects();
+                this.loadAdminUsers();
+            },
+
+            switchAdminTab(tab) {
+                document.getElementById('admin-subjects-tab').style.display = tab === 'subjects' ? 'block' : 'none';
+                document.getElementById('admin-users-tab').style.display = tab === 'users' ? 'block' : 'none';
+                document.querySelectorAll('.admin-nav .admin-nav-btn').forEach((b, i) => {
+                    b.classList.toggle('active', (i === 0) === (tab === 'subjects'));
+                });
+            },
+
+            renderAdminStats() {
+                const el = document.getElementById('admin-stats');
+                if (!el) return;
+                const quizzes = this.adminSubjects.reduce((n, s) => n + (s.quizzes || []).length, 0);
+                const coins = this.adminUsers.reduce((n, u) => n + (u.coins || 0), 0);
+                el.innerHTML = `
+                    <div class="stat-box"><span>${this.adminSubjects.length}</span>Subjects</div>
+                    <div class="stat-box"><span>${quizzes}</span>Quizzes</div>
+                    <div class="stat-box"><span>${this.adminUsers.length}</span>Users</div>
+                    <div class="stat-box"><span>${coins}</span>Coins in circulation</div>`;
+            },
+
+            /* ---------- Subjects ---------- */
+            async loadAdminSubjects() {
+                try {
+                    this.adminSubjects = await this.apiRequest('/admin/subjects');
+                    this.renderAdminSubjects();
+                    this.renderAdminStats();
+                } catch (err) {
+                    this.showToast(err.message || 'Error loading subjects');
+                }
+            },
+
+            renderAdminSubjects() {
+                const tbody = document.getElementById('admin-subjects-list');
+                if (!this.adminSubjects.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="empty-row">No subjects yet. Click "+ Add Subject".</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = this.adminSubjects.map(s => `
+                    <tr>
+                        <td><strong>${this.esc(s.name)}</strong></td>
+                        <td><span class="color-dot" style="background:${this.esc(s.accentColor)}"></span> ${this.esc(s.accentColor)}</td>
+                        <td>${(s.quizzes || []).length}</td>
+                        <td>
+                            <button class="btn-action btn-edit" onclick="app.openSubjectModal('${s._id}')">Edit</button>
+                            <button class="btn-action btn-delete" onclick="app.deleteSubject('${s._id}')">Delete</button>
+                        </td>
+                    </tr>`).join('');
+            },
+
+            openSubjectModal(id) {
+                const s = id ? this.adminSubjects.find(x => x._id === id) : null;
+                const body = document.getElementById('modal-body');
+                document.querySelector('#modal-overlay .modal-content').classList.add('modal-wide');
+                body.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px">${s ? 'Edit Subject' : 'Add Subject'}</h2>
+                    <div class="input-group"><label>Name</label>
+                        <input type="text" id="sub-name" value="${this.esc(s?.name || '')}" placeholder="Mathematics"></div>
+                    <div class="input-group"><label>Accent color</label>
+                        <input type="color" id="sub-color" value="${this.esc(s?.accentColor || '#00f2ff')}" style="height:48px; padding:4px"></div>
+                    <div class="input-group"><label>YouTube playlist (embed URL)</label>
+                        <input type="text" id="sub-yt" value="${this.esc(s?.youtubePlaylistUrl || '')}" placeholder="https://www.youtube.com/embed/playlist?list=..."></div>
+                    <h3 style="margin:10px 0 15px">Quizzes</h3>
+                    <div id="quiz-editor"></div>
+                    <button type="button" class="admin-nav-btn" style="margin-bottom:25px" onclick="app.addQuizRow()">+ Add question</button>
+                    <button type="button" class="btn-add" style="width:100%" onclick="app.saveSubject('${s ? s._id : ''}')">Save</button>`;
+                (s?.quizzes || []).forEach(q => this.addQuizRow(q));
+                if (!s) this.addQuizRow();
+                this.openModal();
+            },
+
+            addQuizRow(q = {}) {
+                const n = ++this._qSeq;
+                const opts = [0, 1, 2, 3].map(i => `
+                    <div class="opt-row">
+                        <input type="radio" name="correct-${n}" value="${i}" ${q.correctAnswerIndex === i ? 'checked' : ''} title="Correct answer">
+                        <input type="text" class="q-opt" placeholder="Option ${i + 1}" value="${this.esc(q.options?.[i] || '')}">
+                    </div>`).join('');
+                const row = document.createElement('div');
+                row.className = 'quiz-row';
+                row.dataset.seq = n;
+                row.innerHTML = `
+                    <div class="quiz-row-head">
+                        <input type="text" class="q-text" placeholder="Question" value="${this.esc(q.question || '')}">
+                        <button type="button" class="btn-action btn-delete" onclick="this.closest('.quiz-row').remove()">✕</button>
+                    </div>
+                    ${opts}
+                    <label class="reward-label">Reward (coins)
+                        <input type="number" class="q-reward" min="1" value="${q.reward || 10}"></label>`;
+                document.getElementById('quiz-editor').appendChild(row);
+            },
+
+            collectQuizzes() {
+                const quizzes = [];
+                for (const row of document.querySelectorAll('#quiz-editor .quiz-row')) {
+                    const question = row.querySelector('.q-text').value.trim();
+                    const checked = row.querySelector('input[type=radio]:checked');
+                    const rawOpts = [...row.querySelectorAll('.q-opt')].map(i => i.value.trim());
+                    if (!question && rawOpts.every(o => !o)) continue; // skip empty rows
+                    if (!question) throw new Error('Every quiz needs a question text');
+                    if (!checked) throw new Error(`Select the correct answer for: "${question}"`);
+                    const correctRaw = Number(checked.value);
+                    if (!rawOpts[correctRaw]) throw new Error(`Correct option is empty in: "${question}"`);
+                    const options = [];
+                    let correctAnswerIndex = 0;
+                    rawOpts.forEach((o, i) => {
+                        if (!o) return;
+                        if (i === correctRaw) correctAnswerIndex = options.length;
+                        options.push(o);
+                    });
+                    if (options.length < 2) throw new Error(`At least 2 options required in: "${question}"`);
+                    const reward = Math.max(1, parseInt(row.querySelector('.q-reward').value, 10) || 10);
+                    quizzes.push({ question, options, correctAnswerIndex, reward });
+                }
+                return quizzes;
+            },
+
+            async saveSubject(id) {
+                try {
+                    const name = document.getElementById('sub-name').value.trim();
+                    const youtubePlaylistUrl = document.getElementById('sub-yt').value.trim();
+                    if (!name) throw new Error('Subject name is required');
+                    if (!youtubePlaylistUrl) throw new Error('YouTube playlist URL is required');
+                    const payload = {
+                        name,
+                        accentColor: document.getElementById('sub-color').value,
+                        youtubePlaylistUrl,
+                        quizzes: this.collectQuizzes()
+                    };
+                    if (id) await this.apiSend('PUT', `/admin/subjects/${id}`, payload);
+                    else await this.apiSend('POST', '/admin/subjects', payload);
+                    this.closeModal();
+                    this.showToast(id ? 'Subject updated' : 'Subject created');
+                    await this.loadAdminSubjects();
+                    this.loadSubjects(); // refresh student view
+                } catch (err) {
+                    this.showToast(err.message || 'Save failed');
+                }
+            },
+
+            async deleteSubject(id) {
+                const s = this.adminSubjects.find(x => x._id === id);
+                if (!confirm(`Delete "${s?.name || 'this subject'}"? This cannot be undone.`)) return;
+                try {
+                    await this.apiSend('DELETE', `/admin/subjects/${id}`);
+                    this.showToast('Subject deleted');
+                    await this.loadAdminSubjects();
+                    this.loadSubjects();
+                } catch (err) {
+                    this.showToast(err.message || 'Delete failed');
+                }
+            },
+
+            /* ---------- Users ---------- */
+            async loadAdminUsers() {
+                try {
+                    this.adminUsers = await this.apiRequest('/admin/users');
+                    this.renderAdminUsers();
+                    this.renderAdminStats();
+                } catch (err) {
+                    this.showToast(err.message || 'Error loading users');
+                }
+            },
+
+            renderAdminUsers() {
+                const q = (document.getElementById('admin-user-search')?.value || '').trim().toLowerCase();
+                const list = this.adminUsers.filter(u =>
+                    !q || (u.username || '').toLowerCase().includes(q) || (u.fullName || '').toLowerCase().includes(q));
+                const tbody = document.getElementById('admin-users-list');
+                if (!list.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="empty-row">No users found.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = list.map(u => {
+                    const isAdmin = u.isAdmin === true || u.role === 'admin';
+                    const self = u.username === this.user?.username;
+                    return `
+                    <tr>
+                        <td><strong>${this.esc(u.fullName)}</strong><br><small style="color:var(--text-muted)">@${this.esc(u.username)} · Lv ${u.level || 1}</small></td>
+                        <td><input type="number" class="admin-inline-input" id="coins-${u._id}" min="0" value="${u.coins || 0}"></td>
+                        <td>
+                            <select class="admin-inline-input" id="role-${u._id}" ${self ? 'disabled title="You cannot change your own role"' : ''}>
+                                <option value="user" ${isAdmin ? '' : 'selected'}>user</option>
+                                <option value="admin" ${isAdmin ? 'selected' : ''}>admin</option>
+                            </select>
+                        </td>
+                        <td><button class="btn-action btn-edit" onclick="app.saveUser('${u._id}')">Save</button></td>
+                    </tr>`;
+                }).join('');
+            },
+
+            async saveUser(id) {
+                try {
+                    const coins = parseInt(document.getElementById(`coins-${id}`).value, 10);
+                    if (Number.isNaN(coins) || coins < 0) throw new Error('Coins must be 0 or more');
+                    const role = document.getElementById(`role-${id}`).value;
+                    await this.apiSend('PATCH', `/admin/users/${id}`, { coins, role, isAdmin: role === 'admin' });
+                    this.showToast('User updated');
+                    await this.loadAdminUsers();
+                } catch (err) {
+                    this.showToast(err.message || 'Update failed');
+                }
+            },
+
+            closeModal() {
+                document.getElementById('modal-overlay').style.display = 'none';
+                document.querySelector('#modal-overlay .modal-content').classList.remove('modal-wide');
+            },
+
+            showToast(msg) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerText = msg;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            },
+
+            async apiRequest(path) {
+                const res = await fetch(`${API_BASE}${path}`, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.message || 'Request failed');
+                }
+                return res.json();
+            },
+
+            async apiPost(path, body) {
+                const res = await fetch(`${API_BASE}${path}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                    },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.message || 'Request failed');
+                }
+                return res.json();
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
